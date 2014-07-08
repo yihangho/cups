@@ -3,9 +3,16 @@ import java.util.HashMap;
 
 public class JavaCups {
     public static void main(String[] args) {
-        Cups.VOLUME_X = 4;
-        Cups.VOLUME_Y = 9;
-        Cups.TARGET_VOLUME = 2;
+        if (args.length >= 3) {
+            Cups.VOLUME_X = Integer.parseInt(args[0]);
+            Cups.VOLUME_Y = Integer.parseInt(args[1]);
+            Cups.TARGET_VOLUME = Integer.parseInt(args[2]);
+        } else {
+            Cups.VOLUME_X = 4;
+            Cups.VOLUME_Y = 9;
+            Cups.TARGET_VOLUME = 2;
+        }
+
 
         ArrayDeque<Cups> queue = new ArrayDeque<Cups>();
         HashMap<Cups, CupsStates> states = new HashMap<Cups, CupsStates>();
