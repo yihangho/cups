@@ -17,4 +17,5 @@ ruby cups.rb 13 14 2
 javac JavaCups.java
 # then
 java JavaCups
+java JavaCups 13 14 2
 ```
