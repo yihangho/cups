@@ -62,7 +62,8 @@ class CupState
 	private static $cup_max_volumes;
 }
 
-CupState::initializeEvent(array(9,4),2);
+
+CupState::initializeEvent(array(isset($argv[1]) ? $argv[1] : 9, isset($argv[2]) ? $argv[2] : 4),isset($argv[3]) ? $argv[3] : 2);
 $visited_states = array();
 $bfs_queue = array();
 
