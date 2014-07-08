@@ -183,6 +183,7 @@ int main(int argc , char * argv[])
         }
         else
             puts("No possible solution!\n");
+        // delete all the remaining memory locations
     }
     catch(const char* e){
         printf("%s " , e);
