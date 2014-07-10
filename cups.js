@@ -38,14 +38,14 @@ function Cups(x, y) {
         };
 
         this.constructor.prototype.pour_x_y = function() {
-            var new_x = Math.min(VOLUME_X, this.x + this.y);
-            var new_y = this.y - (new_x - this.x);
+            var new_y = Math.min(VOLUME_Y, this.x + this.y);
+            var new_x = this.x - (new_y - this.y);
             return new this.constructor(new_x, new_y);
         };
 
         this.constructor.prototype.pour_y_x = function() {
-            var new_y = Math.min(VOLUME_Y, this.x + this.y);
-            var new_x = this.x - (new_y - this.y);
+            var new_x = Math.min(VOLUME_X, this.x + this.y);
+            var new_y = this.y - (new_x - this.x);
             return new this.constructor(new_x, new_y);
         };
     }

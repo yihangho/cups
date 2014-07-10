@@ -122,14 +122,14 @@ class Cups {
     public Cups emptyY() { return new Cups(x, 0); }
 
     public Cups pourXY() {
-        int newX = Math.min(VOLUME_X, x + y);
-        int newY = y - (newX - x);
+        int newY = Math.min(VOLUME_Y, x + y);
+        int newX = x - (newY - y);
         return new Cups(newX, newY);
     }
 
     public Cups pourYX() {
-        int newY = Math.min(VOLUME_Y, x + y);
-        int newX = x - (newY - y);
+        int newX = Math.min(VOLUME_X, x + y);
+        int newY = y - (newX - x);
         return new Cups(newX, newY);
     }
 }
