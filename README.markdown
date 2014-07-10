@@ -33,3 +33,10 @@ g++ cups.cpp -o cups
 php cups.php
 php cups.php 13 14 2
 ```
+
+## Pascal
+```bash
+fpc cups.pas
+# then
+./cups
+```
