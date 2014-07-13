@@ -127,7 +127,6 @@ inline CupState * CupState::getParentPtr(){
 
 int main(int argc , char * argv[])
 {
-	
     try{
         long long vol_1_tmp = argc >= 1 ? strtol(argv[1] , NULL, 10) : 90;
         long long vol_2_tmp  = argc >= 2 ? strtol(argv[2] , NULL, 10) : 40;
