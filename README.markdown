@@ -19,6 +19,12 @@ javac JavaCups.java
 java JavaCups
 java JavaCups 13 14 2
 ```
+## C
+```bash
+gcc cups.c -o cups
+./cups
+./cups 13 14 2
+```
 
 ## C++
 ```bash
