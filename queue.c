@@ -8,34 +8,36 @@ typedef struct{
 } CupState;
 
 struct Node{
-
+	CupState value;
 	struct Node * next;
 };
 
-struct typedef{
+typedef struct{
 	struct Node * head;
 	struct Node * tail;
 	int size;
 } Queue;
 
-struct Queue queue_initialize(){
+Queue queue_initialize(){
 	CupState zero_cup_state = {0,0};
-	struct Queue new_queue = {NULL , NULL , zero_cup_state};
-	return zero_cup_state;
+	Queue new_queue = {NULL , NULL , 0};
+	return new_queue;
 }
 
-int queue_size(struct Queue * current_queue){
+int queue_size(Queue * current_queue){
 	return current_queue->size;
 }
 
-int queue_front(struct Queue * current_queue){
-	if(!current_queue->head)
-		return 0;
+CupState queue_front(Queue * current_queue){
+	if(!current_queue->head){
+		CupState zero_cup_state = {0,0};
+		return zero_cup_state;
+	}
 	else 
 		return (current_queue->head)->value;
 }
 
-void queue_insert(struct Queue * current_queue , int new_value){
+void queue_insert(Queue * current_queue , const CupState new_value){
 	struct Node * ptr_new_node = malloc(sizeof (struct Node));
 
 	ptr_new_node->value = new_value;
@@ -54,7 +56,7 @@ void queue_insert(struct Queue * current_queue , int new_value){
 	current_queue->size++;
 }
 
-void queue_pop(struct Queue * current_queue){
+void queue_pop(Queue * current_queue){
 	struct Node * current_head_node = current_queue->head;
 	current_queue->head = current_head_node->next;
 	free(current_head_node);
@@ -65,7 +67,19 @@ void queue_pop(struct Queue * current_queue){
 	current_queue->size--;
 }
 
-int main()
+int main(int args , char * argv[])
 {
-
+	Queue q = queue_initialize();
+	int i , n;
+	n = 5;
+	for(i = 0 ; i < n ; i++){
+		CupState x = {i,i};
+		queue_insert(&q , x);
+	}
+	for(i = 0 ; i < n ; i++){
+		CupState x = queue_front(&q);
+		printf("%d %d\n" , x.volume_x , x.volume_y);
+		queue_pop(&q);
+	}
+	return 0;
 }
