@@ -2,19 +2,37 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+typedef struct{
+	int volume_x;
+	int volume_y;
+} CupState;
+
 struct Node{
-	int value;
+
 	struct Node * next;
 };
 
-struct Queue{
+struct typedef{
 	struct Node * head;
 	struct Node * tail;
-};
+	int size;
+} Queue;
 
 struct Queue queue_initialize(){
-	struct Queue new_queue = {NULL , NULL};
-	return new_queue;
+	CupState zero_cup_state = {0,0};
+	struct Queue new_queue = {NULL , NULL , zero_cup_state};
+	return zero_cup_state;
+}
+
+int queue_size(struct Queue * current_queue){
+	return current_queue->size;
+}
+
+int queue_front(struct Queue * current_queue){
+	if(!current_queue->head)
+		return 0;
+	else 
+		return (current_queue->head)->value;
 }
 
 void queue_insert(struct Queue * current_queue , int new_value){
@@ -32,6 +50,8 @@ void queue_insert(struct Queue * current_queue , int new_value){
 
 	if(!current_queue->head)
 		current_queue->head = ptr_new_node;
+
+	current_queue->size++;
 }
 
 void queue_pop(struct Queue * current_queue){
@@ -41,28 +61,11 @@ void queue_pop(struct Queue * current_queue){
 
 	if(!current_queue->head)
 		current_queue->tail = NULL;
+
+	current_queue->size--;
 }
-
-int queue_front(struct Queue * current_queue){
-	Node * current_head_node = current_queue->head;
-	return current_head_node->value;
-}
-
-// void queue_pop(Queue * current_queue){
-// 	Node * new_first_node = (current_queue->head)->next;
-// 	free(current_queue->head);
-// 	current_queue->head = new_first_node;
-// 	if(current_queue->head == NULL)
-// 		current_queue->tail = NULL;
-// }
-
-
-// bool queue_empty(Queue * current_queue){
-// 	return (current_queue->head == NULL) || (current_queue->tail == NULL);
-// }
 
 int main()
 {
-	struct Queue q = queue_initialize();
-	queue_insert(&q , 1);
+
 }
