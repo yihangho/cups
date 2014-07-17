@@ -127,13 +127,13 @@ inline CupState * CupState::getParentPtr(){
 
 int main(int argc , char * argv[])
 {
-	
     try{
-        long long vol_1_tmp = argc >= 1 ? strtol(argv[1] , NULL, 10) : 90;
-        long long vol_2_tmp  = argc >= 2 ? strtol(argv[2] , NULL, 10) : 40;
-        long long target_vol_tmp = argc >= 3 ? strtol(argv[3] , NULL, 10) : 20;
-        CupState::initializeEvent(vol_1_tmp , vol_2_tmp , target_vol_tmp);
 
+        long long vol_1_tmp = argc > 1 ? strtol(argv[1] , NULL, 10) : 90;
+        long long vol_2_tmp  = argc > 2 ? strtol(argv[2] , NULL, 10) : 40;
+        long long target_vol_tmp = argc > 3 ? strtol(argv[3] , NULL, 10) : 20;
+
+        CupState::initializeEvent(vol_1_tmp , vol_2_tmp , target_vol_tmp);
         printf("Your target volume is %lld , max volume 1 is %lld whereas max volume 2 is %lld\n", CupState::target_volume , CupState::cup_1_max_volume , CupState::cup_2_max_volume );
 
         map<string , bool> visited_states;
@@ -176,6 +176,7 @@ int main(int argc , char * argv[])
         }
         if(found_volume) {
             do{
+
                 printf("Volume is %lld and %lld\n" , ptr_current_state->getCupVolume(1) , ptr_current_state->getCupVolume(2));
                 ptr_current_state = ptr_current_state->getParentPtr();
             }while(ptr_current_state);
