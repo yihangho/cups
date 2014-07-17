@@ -95,7 +95,7 @@ CupState pour_from_x_to_y(const CupState * current_state){ //take note that this
 	new_state.volume_x = current_state->volume_x;
 	new_state.volume_y = current_state->volume_y;
 
-	new_state.volume_y = minimum(new_state.volume_y + new_state.volume_y , MAX_VOLUME_Y);
+	new_state.volume_y = minimum(new_state.volume_y + new_state.volume_x , MAX_VOLUME_Y);
 	new_state.volume_x -= (new_state.volume_y - current_state->volume_y); 
 	return new_state;	
 }
@@ -134,7 +134,7 @@ bool isTargetVolume(const CupState * current_state){
 
 int main(int args , char * argv[])
 {
-	if(args == 3){
+	if(args >= 4){
 		MAX_VOLUME_X = atoi(argv[1]);
 		MAX_VOLUME_Y = atoi(argv[2]);
 		TARGET_VOLUME = atoi(argv[3]);
@@ -191,6 +191,7 @@ int main(int args , char * argv[])
 				case 5 : next_state = fill_x(ptr_current_state); break;
 			}
 			if(!visited_states[next_state.volume_x][next_state.volume_y]){
+				//printf("%d %d\n" , next_state.volume_x , next_state.volume_y);
 				queue_insert(&bfs_queue , next_state);
 			}
 		}
