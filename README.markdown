@@ -39,3 +39,8 @@ g++ cups.cpp -o cups
 php cups.php
 php cups.php 13 14 2
 ```
+
+## Go
+```bash
+go run cups.go
+```

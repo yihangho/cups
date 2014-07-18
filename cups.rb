@@ -49,14 +49,14 @@ class Cups
   end
 
   def pour_x_y
-    new_x = [VOLUME_X, x+y].min
-    new_y = y - (new_x - x)
+    new_y = [VOLUME_Y, x+y].min
+    new_x = x - (new_y - y)
     self.class.new(new_x, new_y)
   end
 
   def pour_y_x
-    new_y = [VOLUME_Y, x+y].min
-    new_x = x - (new_y - y)
+    new_x = [VOLUME_X, x+y].min
+    new_y = y - (new_x - x)
     self.class.new(new_x, new_y)
   end
 end
