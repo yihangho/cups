@@ -104,6 +104,7 @@ int main(int argc , char * argv[])
         assert(vol_1_tmp >= 0 && vol_2_tmp >= 0 && target_vol_tmp >= 0);
         CupState::initializeEvent(vol_1_tmp , vol_2_tmp , target_vol_tmp);
 
+        CupState::initializeEvent(vol_1_tmp , vol_2_tmp , target_vol_tmp);
         printf("Your target volume is %lld , max volume 1 is %lld whereas max volume 2 is %lld\n", CupState::target_volume , CupState::cup_1_max_volume , CupState::cup_2_max_volume );
 
         map<string , bool> visited_states;
@@ -157,7 +158,6 @@ int main(int argc , char * argv[])
         }
         else
             puts("No possible solution!\n");
-        // delete all the remaining memory locations
     }
     catch(const char* e){
         printf("%s " , e);
