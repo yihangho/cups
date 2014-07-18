@@ -1,10 +1,4 @@
-#include <cstdio>
-#include <queue>
-#include <map>
-#include <string>
-#include <algorithm>
-#include <sstream>
-#include <iostream>
+#include <bits/stdc++.h>
 typedef long long ll;
 using namespace std;
 
@@ -14,22 +8,18 @@ public:
     CupState(const ll & vol_1 = 0 , const ll & vol_2 = 0);
     static void initializeEvent(const ll & vol_1 , const ll & vol_2 , const ll & target_vol);
     ll getCupVolume(const short & cup_id);
-    ll getCupMaxVolume(const short & cup_id);
-    bool isEmpty(const short & cup_id);
     CupState pour(const short & source_id , const short & target_id);
     CupState fill(const short & cup_id);
     CupState empty(const short & cup_id);
     short isTargetVolume();
-    void setParentPtr(CupState * new_ptr_parent);
-    CupState * getParentPtr();
     string hash();
     static ll target_volume;
     static ll cup_1_max_volume;
     static ll cup_2_max_volume;
+    CupState * ptr_parent;
 private:
     ll cup_1_volume;
     ll cup_2_volume;
-    CupState * ptr_parent;
 };
 
 ll CupState::target_volume;
@@ -53,18 +43,6 @@ ll CupState::getCupVolume(const short & cup_id){
     if(cup_id == 1) return cup_1_volume;
     else if (cup_id == 2) return cup_2_volume;
     else return 0;
-}
-
-ll CupState::getCupMaxVolume(const short & cup_id){
-    if(cup_id == 1) return CupState::cup_1_max_volume;
-    else if (cup_id == 2) return CupState::cup_2_max_volume;
-    else throw "invalid cup id!";
-}
-
-bool CupState::isEmpty(const short & cup_id){
-    if(cup_id == 1) return cup_1_volume == 0;
-    else if(cup_id == 2) return cup_2_volume == 0;
-    else throw "invalid cup id!";
 }
 
 CupState CupState::pour(const short & source_id , const short & target_id){
@@ -117,20 +95,13 @@ string CupState::hash(){
     return ss.str();
 }
 
-void CupState::setParentPtr(CupState * new_ptr_parent){
-    ptr_parent = new_ptr_parent;
-}
-
-inline CupState * CupState::getParentPtr(){
-    return ptr_parent;
-}
-
 int main(int argc , char * argv[])
 {
     try{
-        long long vol_1_tmp = argc >= 1 ? strtol(argv[1] , NULL, 10) : 90;
-        long long vol_2_tmp  = argc >= 2 ? strtol(argv[2] , NULL, 10) : 40;
-        long long target_vol_tmp = argc >= 3 ? strtol(argv[3] , NULL, 10) : 20;
+        long long vol_1_tmp = argc >= 2 ? strtol(argv[1] , NULL, 10) : 90;
+        long long vol_2_tmp  = argc >= 3 ? strtol(argv[2] , NULL, 10) : 40;
+        long long target_vol_tmp = argc >= 4 ? strtol(argv[3] , NULL, 10) : 20;
+        assert(vol_1_tmp >= 0 && vol_2_tmp >= 0 && target_vol_tmp >= 0);
         CupState::initializeEvent(vol_1_tmp , vol_2_tmp , target_vol_tmp);
 
         printf("Your target volume is %lld , max volume 1 is %lld whereas max volume 2 is %lld\n", CupState::target_volume , CupState::cup_1_max_volume , CupState::cup_2_max_volume );
@@ -168,17 +139,21 @@ int main(int argc , char * argv[])
                     case 5 : next = ptr_current_state->fill(2); break;
                 }
                 if(!visited_states[next.hash()]){
-                    next.setParentPtr(ptr_current_state);
+                    next.ptr_parent = ptr_current_state;
                     bfs.push(next);
                 }
             }
         }
         if(found_volume) {
+            vector<pair<ll,ll> > results;
             do{
-                printf("Volume is %lld and %lld\n" , ptr_current_state->getCupVolume(1) , ptr_current_state->getCupVolume(2));
-                ptr_current_state = ptr_current_state->getParentPtr();
-            }while(ptr_current_state);
+            	results.push_back(make_pair(ptr_current_state->getCupVolume(1) , ptr_current_state->getCupVolume(2)));
+                ptr_current_state = ptr_current_state->ptr_parent;
+            } while(ptr_current_state);
             
+            for(int i = results.size() - 1 ; i >= 0 ; i--){
+            	printf("(%lld , %lld)\n" , results[i].first , results[i].second);	
+            }
         }
         else
             puts("No possible solution!\n");
