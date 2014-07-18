@@ -12,6 +12,15 @@ ruby cups.rb
 ruby cups.rb 13 14 2
 ```
 
+## Python
+```bash
+python cups.py
+python cups.py 13 14 2
+# or
+python3 cups.py
+python3 cups.py 13 14 2
+```
+
 ## Java
 ```bash
 javac JavaCups.java
@@ -19,9 +28,11 @@ javac JavaCups.java
 java JavaCups
 java JavaCups 13 14 2
 ```
+
 ## C
 ```bash
 gcc cups.c -o cups
+# then
 ./cups
 ./cups 13 14 2
 ```
