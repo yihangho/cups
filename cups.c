@@ -7,22 +7,22 @@ typedef struct CupState{
 	int volume_x;
 	int volume_y;
 	struct CupState * parent_state;
+	int depth;
 }CupState;
 
 // Code for the linked list and queue
-struct Node{
+typedef struct Node{
 	CupState value;
 	struct Node * next;
-};
+}Node;
 
-typedef struct{
-	struct Node * head;
-	struct Node * tail;
+typedef struct Queue{
+	Node * head;
+	Node * tail;
 	int size;
 } Queue;
 
 Queue queue_initialize(){
-	CupState zero_cup_state = {0,0};
 	Queue new_queue = {NULL , NULL , 0};
 	return new_queue;
 }
@@ -33,7 +33,7 @@ int queue_size(Queue * current_queue){
 
 CupState queue_front(Queue * current_queue){
 	if(!current_queue->head){
-		CupState zero_cup_state = {0,0};
+		CupState zero_cup_state = {0,0,NULL,0};
 		return zero_cup_state;
 	}
 	else 
@@ -41,13 +41,13 @@ CupState queue_front(Queue * current_queue){
 }
 
 void queue_insert(Queue * current_queue , const CupState new_value){
-	struct Node * ptr_new_node = malloc(sizeof (struct Node));
+	Node * ptr_new_node = malloc(sizeof (struct Node));
 
 	ptr_new_node->value = new_value;
 	ptr_new_node->next = NULL;
 
 	if(current_queue->tail){
-		struct Node * current_last_node = current_queue->tail;
+		Node * current_last_node = current_queue->tail;
 		current_last_node->next = ptr_new_node;
 	}
 
@@ -60,7 +60,7 @@ void queue_insert(Queue * current_queue , const CupState new_value){
 }
 
 void queue_pop(Queue * current_queue){
-	struct Node * current_head_node = current_queue->head;
+	Node * current_head_node = current_queue->head;
 	current_queue->head = current_head_node->next;
 	free(current_head_node);
 
@@ -81,7 +81,7 @@ int minimum(const int a, const int b){
 }
 
 CupState pour_from_y_to_x(const CupState * current_state){ //take note that this returns a pointer!
-	CupState new_state = {0,0,current_state};
+	CupState new_state = {0,0,current_state,current_state->depth + 1};
 	new_state.volume_x = current_state->volume_x;
 	new_state.volume_y = current_state->volume_y;
 
@@ -91,7 +91,7 @@ CupState pour_from_y_to_x(const CupState * current_state){ //take note that this
 }
 
 CupState pour_from_x_to_y(const CupState * current_state){ //take note that this returns a pointer!
-	CupState new_state = {0,0,current_state};
+	CupState new_state = {0,0,current_state ,current_state->depth + 1};
 	new_state.volume_x = current_state->volume_x;
 	new_state.volume_y = current_state->volume_y;
 
@@ -101,28 +101,28 @@ CupState pour_from_x_to_y(const CupState * current_state){ //take note that this
 }
 
 CupState empty_x(const CupState * current_state){
-	CupState new_state = {0,0,current_state};
+	CupState new_state = {0,0,current_state ,current_state->depth + 1};
 	new_state.volume_x = 0;
 	new_state.volume_y = current_state->volume_y;
 	return new_state;
 }
 
 CupState empty_y(const CupState * current_state){
-	CupState new_state ={0,0,current_state};
+	CupState new_state ={0,0,current_state,current_state->depth + 1};
 	new_state.volume_y = 0;
 	new_state.volume_x = current_state->volume_x;
 	return new_state;
 }
 
 CupState fill_x(const CupState * current_state){
-	CupState new_state = {0,0,current_state};
+	CupState new_state = {0,0,current_state,current_state->depth + 1};
 	new_state.volume_x = MAX_VOLUME_X;
 	new_state.volume_y = current_state->volume_y;
 	return new_state;
 }
 
 CupState fill_y(const CupState * current_state){
-	CupState new_state = {0,0,current_state};
+	CupState new_state = {0,0,current_state,current_state->depth + 1};
 	new_state.volume_y = MAX_VOLUME_Y;
 	new_state.volume_x = current_state->volume_x;
 	return new_state;
@@ -134,19 +134,12 @@ bool isTargetVolume(const CupState * current_state){
 
 int main(int args , char * argv[])
 {
-	if(args >= 4){
-		MAX_VOLUME_X = atoi(argv[1]);
-		MAX_VOLUME_Y = atoi(argv[2]);
-		TARGET_VOLUME = atoi(argv[3]);
-	}
-	else {
-		MAX_VOLUME_X = 9;
-		MAX_VOLUME_Y = 4;
-		TARGET_VOLUME = 2;
-	}
+	MAX_VOLUME_X = args >= 2 ? atoi(argv[1]) : 9;
+	MAX_VOLUME_Y = args >= 3 ? atoi(argv[2]) : 4;
+	TARGET_VOLUME = args >= 4 ? atoi(argv[3]) : 2;
 
 	// Variable declarations
-	CupState initial_state = {0 ,0 , NULL};
+	CupState initial_state = {0 ,0 , NULL , 0};
 	CupState current_state;
 	CupState * ptr_current_state;
 	bool found_solution = false;
@@ -162,20 +155,34 @@ int main(int args , char * argv[])
 		current_state = queue_front(&bfs_queue);
 		queue_pop(&bfs_queue);
 		ptr_current_state = malloc(sizeof(CupState));
-		ptr_current_state->volume_x = current_state.volume_x;
-		ptr_current_state->volume_y = current_state.volume_y;
-		ptr_current_state->parent_state = current_state.parent_state;
+		*ptr_current_state = current_state;
 
 		if(visited_states[current_state.volume_x][current_state.volume_y])
 			continue;
 
 		visited_states[current_state.volume_x][current_state.volume_y] = true;
 		if(isTargetVolume(ptr_current_state)){ //some sort of code to be called on success
+			printf("Found a solution in %d steps\n" , current_state.depth);
+			int * ptr_all_x_volume = malloc(sizeof(int) * (current_state.depth + 2));
+			int * ptr_all_y_volume = malloc(sizeof(int) * (current_state.depth + 2));
+			int counter = 0;
+
 			do {
-				printf("(%d , %d)\n" , ptr_current_state->volume_x , ptr_current_state->volume_y);
+				ptr_all_x_volume[counter] = ptr_current_state->volume_x;
+				ptr_all_y_volume[counter] = ptr_current_state->volume_y;
 				ptr_current_state = ptr_current_state->parent_state;
-			}while(ptr_current_state);
-			found_solution = true;
+				counter++;
+			} while(ptr_current_state);
+			
+			
+			int i;
+			for( ; counter ; counter--)
+				printf("(%d , %d)\n" , ptr_all_x_volume[counter-1] , ptr_all_y_volume[counter-1]);
+
+			free(ptr_all_x_volume);
+			free(ptr_all_y_volume);
+
+			found_solution = true; //termintaing the flag
 			break;
 		}
 
