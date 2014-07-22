@@ -1,0 +1,46 @@
+.cups
+{
+	border-bottom: solid black 5px;
+	border-left : solid black 5px;
+	border-right: solid black 5px;
+	padding-left: 0px;
+	padding-right: 0px;
+	height: 500px;
+	/*background-color : blue;*/
+}
+
+/*Forced overflow but hides it */
+.cups_content
+{
+	overflow: hidden;
+	height: 100%;
+	background-color : #3498db;
+	color : red;
+	font-size : 16px;
+	text-align: center;
+	padding-left: 0px !important; 
+	padding-right: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+.cup_volume_description
+{
+	height: 50px;
+	font-size: 20px;
+	font-weight: bold;
+	background-color : #f39c12;
+	color: white;
+	text-align: center;
+	vertical-align: center;
+}
+
+#alert_notice
+{
+	display: none;
+	text-align: center;
+}
+
+#main_presentation_screen
+{
+	display: none;
+}
