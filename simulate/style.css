@@ -28,10 +28,11 @@
 	height: 50px;
 	font-size: 20px;
 	font-weight: bold;
-	background-color : #f39c12;
+		text-align: center;
+	/*background-color : #f39c12;
 	color: white;
-	text-align: center;
-	vertical-align: center;
+
+	vertical-align: center;*/
 }
 
 #alert_notice

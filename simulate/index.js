@@ -142,27 +142,19 @@ var simulateEvent = function(VOLUME_X , VOLUME_Y , TARGET_VOLUME , speed){
     }
 
     var initializeCupSize = function(volume_x , volume_y){
-        //maximum_volume = volume_x > volume_y ? volume_x : volume_y;
-        $("#cup_x").css("padding-top" , '0px');
-        $("#cup_y").css("padding-top" , '0px');
-
-        if(volume_x > volume_y){
-            $("#cup_x").height(maximum_pixel_height);
-            $("#cup_y").height(maximum_pixel_height * (volume_y / volume_x));
-        }
-        else {
-            $("#cup_y").height(maximum_pixel_height);
-            $("#cup_x").height(maximum_pixel_height * (volume_x / volume_y));            
-        }
-
+        //Re-initialize padding and margin
+        $(".cups").css({
+            "padding-top" : "0px",
+            "margin-top" : "0px"
+        });
+        $(volume_y > volume_x ? "#cup_y" : "#cup_x").height(maximum_pixel_height);
+        $(volume_y > volume_x ? "#cup_x" : "#cup_y").height(maximum_pixel_height * (volume_x > volume_y ? (volume_y/volume_x) : volume_x / volume_y));
 
         console.log("heightx -> " + $("#cup_x").height());
         console.log("heighty -> " + $("#cup_y").height());
 
         cup_x_pixel_height = $("#cup_x").height();
         cup_y_pixel_height = $("#cup_y").height();
-        console.log(cup_x_pixel_height + " , " + cup_y_pixel_height);
-        console.log(cup_y_pixel_height + " " + cup_x_pixel_height);
 
         //$("#cup_x").height(cup_x_pixel_height + 10);
         //$("#cup_y").height(cup_y_pixel_height + 10);
@@ -210,6 +202,8 @@ var triggerEventSimulation = function(){
     var y = Number(document.getElementById('input_second_cup_volume').value);
     var z = Number(document.getElementById('input_target_cup_volume').value);
     var speed = Number(document.getElementById("input_target_speed").value);
+    if(document.getElementById("input_target_speed").value == "")
+        speed = 1000;
     simulateEvent(x , y , z , speed);
 }
 
