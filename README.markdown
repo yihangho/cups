@@ -55,3 +55,6 @@ php cups.php 13 14 2
 ```bash
 go run cups.go
 ```
+
+## Simulation
+open the file ./simulation/index.html with any regular browser
