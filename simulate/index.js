@@ -83,7 +83,6 @@ function get_transformation_method(vol_x , vol_y , vol_target){
                 console.log(ans_arr[i].toString());
             }
 
-            console.log(cup_states_container);
             return return_arr;
         }
         mutation_methods.forEach(function(sym) {
@@ -100,11 +99,11 @@ function get_transformation_method(vol_x , vol_y , vol_target){
 
 var print_notice = function(notice , positive , timing){
     if($("#alert_notice").css("display").toString().toLowerCase() != 'none'){
-        $("#alert_notice").hide(timing);
+        $("#alert_notice").hide(400);
     }
     document.getElementById("alert_notice").className = positive ? "alert alert-success" : "alert alert-danger";
     document.getElementById("alert_notice").innerHTML = notice;
-    $("#alert_notice").slideDown(timing);
+    $("#alert_notice").slideDown(400);
 }
 
 var simulateEvent = function(VOLUME_X , VOLUME_Y , TARGET_VOLUME , speed){
@@ -125,13 +124,10 @@ var simulateEvent = function(VOLUME_X , VOLUME_Y , TARGET_VOLUME , speed){
         var x = array_of_results[depth][0];
         var y = array_of_results[depth][1];
 
-        console.log(array_of_results[depth][0] + " " + array_of_results[depth][1]);
-        console.log(($("#cup_x").height() - x / VOLUME_X * $("#cup_x").height()).toString() + " " + ($("#cup_y").height() - y / VOLUME_Y * $("#cup_y").height()).toString() );
+        $("#cup_x").animate({"padding-top" : (10 + cup_x_pixel_height - x / VOLUME_X * cup_x_pixel_height).toString() + "px"} , speed / 2);
+        $("#cup_y").animate({"padding-top" : (10 + cup_y_pixel_height - y / VOLUME_Y * cup_y_pixel_height).toString() + "px"} , speed / 2);
+        showStep(depth , array_of_results);
 
-        $("#cup_x").animate({"padding-top" : (cup_x_pixel_height - x / VOLUME_X * cup_x_pixel_height).toString() + "px"} , speed / 2);
-        $("#cup_y").animate({"padding-top" : (cup_y_pixel_height - y / VOLUME_Y * cup_y_pixel_height).toString() + "px"} , speed / 2 , function(){        console.log("HEIGHT -> " + $("#cup_x").css("height") + " " + $('#cup_y').css("height"));         console.log("padding-top -> " + $("#cup_x").css("padding-top") + " " + $('#cup_y').css("padding-top"));});
-        // $("#cup_x_content").height(x / VOLUME_X * $("#cup_x").height());
-        // $("#cup_y_content").height(y / VOLUME_Y * $("#cup_y").height());
         document.getElementById("cup_x_description").innerHTML = x.toString();
         document.getElementById("cup_y_description").innerHTML = y.toString();
 
@@ -147,26 +143,42 @@ var simulateEvent = function(VOLUME_X , VOLUME_Y , TARGET_VOLUME , speed){
             "padding-top" : "0px",
             "margin-top" : "0px"
         });
-        $(volume_y > volume_x ? "#cup_y" : "#cup_x").height(maximum_pixel_height);
-        $(volume_y > volume_x ? "#cup_x" : "#cup_y").height(maximum_pixel_height * (volume_x > volume_y ? (volume_y/volume_x) : volume_x / volume_y));
+        $(volume_y > volume_x ? "#cup_y" : "#cup_x").height(10 + maximum_pixel_height);
+        $(volume_y > volume_x ? "#cup_x" : "#cup_y").height(10 + maximum_pixel_height * (volume_x > volume_y ? (volume_y/volume_x) : volume_x / volume_y));
 
-        console.log("heightx -> " + $("#cup_x").height());
-        console.log("heighty -> " + $("#cup_y").height());
-
-        cup_x_pixel_height = $("#cup_x").height();
-        cup_y_pixel_height = $("#cup_y").height();
-
-        //$("#cup_x").height(cup_x_pixel_height + 10);
-        //$("#cup_y").height(cup_y_pixel_height + 10);
+        cup_x_pixel_height = $("#cup_x").height() - 10;
+        cup_y_pixel_height = $("#cup_y").height() - 10;
 
         $((volume_x > volume_y ? "#cup_y" : "#cup_x")).css("margin-top" , Math.abs(cup_y_pixel_height - cup_x_pixel_height));
 
         // start with zero volume
         $("#cup_x").css("padding-top" , ($("#cup_x").css("height")));
         $("#cup_y").css("padding-top" , ($("#cup_y").css("height")));
-        console.log("padding-top " + $("#cup_x").css("padding-top") + " , " + $("#cup_y").css("padding-top") )
+        // console.log("padding-top " + $("#cup_x").css("padding-top") + " , " + $("#cup_y").css("padding-top") )
     }
 
+    var showStep = function(step , array_of_results){
+        if($("#step_notice").css("display").toString().toLowerCase() == 'none')
+            $("#step_notice").show(200);
+
+        if(step == 0){
+            document.getElementById("step_notice").innerHTML = "<strong>Start with both cup X and cup Y empty!</strong>";
+        }
+        else {
+            var y2 = array_of_results[step][1];
+            var y1 = array_of_results[step-1][1];
+            var x2 = array_of_results[step][0];
+            var x1 = array_of_results[step-1][0];
+            var message;
+            if(y2 == VOLUME_Y && x1 == x2) message = "<strong>Fill Cup Y with water</strong>";
+            else if(x2 == VOLUME_X && y1 == y2) message = "<strong>Fill Cup x with water</strong>";
+            else if(y2 == 0 && x1 == x2) message = "<strong>Empty Cup Y</strong>";
+            else if(x2 == 0 && y1 == y2) message = "<strong>Empty Cup X</strong>";
+            else if(x2 > x1 && x2 - x1 == y1 - y2) message = "<strong>Pour water from Cup Y to Cup X</strong>";
+            else if(y2 > y1 && y2 - y1 == x1 - x2) message = "<strong>Pour water from Cup X to Cup Y</strong>";
+            document.getElementById("step_notice").innerHTML = message;
+        }
+    }
 
     try{
         document.getElementById("trigger_event_button").disabled = true;
