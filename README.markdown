@@ -57,4 +57,4 @@ go run cups.go
 ```
 
 ## Simulation
-open the file ./simulation/index.html with any regular browser
+open the file `./simulation/index.html` with any regular browser
