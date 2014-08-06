@@ -56,5 +56,22 @@ php cups.php 13 14 2
 go run cups.go
 ```
 
+## Lua
+```bash
+lua cups.lua
+lua cups.lua 13 14 2
+# or
+luajit cups.lua
+luajit cups.lua 13 14 2
+```
+
+## Haskell
+```bash
+ghc --make -O cups.hs
+# then
+./cups
+./cups 13 14 2
+```
+
 ## Simulation
 open the file `./simulation/index.html` with any regular browser
