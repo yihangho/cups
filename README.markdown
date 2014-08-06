@@ -60,6 +60,9 @@ go run cups.go
 ```bash
 lua cups.lua
 lua cups.lua 13 14 2
+# or
+luajit cups.lua
+luajit cups.lua 13 14 2
 ```
 
 ## Haskell
