@@ -219,6 +219,29 @@ var triggerEventSimulation = function(){
     simulateEvent(x , y , z , speed);
 }
 
+var getUrlQueryStrings = function(){
+    var return_arr = {};
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split("&");
+    for(var i = 0 ; i < hashes.length ; i++){
+        var hash = hashes[i].split("=");
+        return_arr[hash[0]] = hash[1];
+    }
+    return return_arr
+}
+
 $(document).ready(function(){
-    
+    var query_property = getUrlQueryStrings();
+    if(typeof query_property["target"] !== "undefined" && typeof query_property["first"] !== "undefined" && typeof query_property["second"] !== "undefined"){
+        var x = document.getElementById("input_first_cup_volume").value = Number(query_property["first"])
+        var y = document.getElementById("input_second_cup_volume").value = Number(query_property["second"])
+        var z = document.getElementById("input_target_cup_volume").value = Number(query_property["target"])
+        var speed = document.getElementById("input_target_speed").value = (typeof query_property["speed"] === "undefined") ? 1000 : Number(query_property["speed"])
+        simulateEvent(x , y , z , speed)
+    }
+    else{
+        if(typeof query_property["first"] !== "undefined" )document.getElementById("input_first_cup_volume").value = Number(query_property["first"])
+        if(typeof query_property["second"] !== "undefined" )document.getElementById("input_second_cup_volume").value = Number(query_property["second"])
+        if(typeof query_property["target"] !== "undefined" )document.getElementById("input_target_cup_volume").value = Number(query_property["target"])
+        document.getElementById("input_target_speed").value = (typeof query_property["speed"] === "undefined") ? 1000 : Number(query_property["speed"])
+    }
 });
