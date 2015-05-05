@@ -73,5 +73,11 @@ ghc --make -O cups.hs
 ./cups 13 14 2
 ```
 
+## Clojure
+```bash
+# Assuming you have lein and lein exec installed
+lein exec cups.clj
+```
+
 ## Simulation
 open the file `./simulation/index.html` with any regular browser
