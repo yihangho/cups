@@ -11,19 +11,17 @@
   )
 )
 
-(let [max-x max-x max-y max-y target-volume target-volume]
-  (defstruct cup-state :x :y)
+(defstruct cup-state :x :y)
 
-  (defn is-target-volume? [state]
-    (or 
-      (= target-volume (get state :x))
-      (= target-volume (get state :x))
-    )
+(defn is-target-volume? [state]
+  (or 
+    (= target-volume (get state :x))
+    (= target-volume (get state :x))
   )
+)
 
-  (defn get-next-states [state]
-    (def x (get state :x))
-    (def y (get state :y))
+(defn get-next-states [state]
+  (let [ x (get state :x) y (get state :y) ]
     [
       ; pour x -> y
       (struct cup-state (- x (- (min max-y (+ y x)) y)) (min max-y (+ y x)) )
@@ -39,10 +37,10 @@
       (struct cup-state x 0)
     ]
   )
+)
 
-  (defn transverse [stack visited]
-    (def latest-state (last (first stack)))
-
+(defn transverse [stack visited]
+  (let [ latest-state (last (first stack))]
     (let [ [accepted new-visited]
       (loop [ states (get-next-states latest-state) v visited arr []]
         (if (empty? states)
@@ -59,10 +57,10 @@
 
       [ (concat (next stack) (map #(conj (first stack) %) accepted)) new-visited ]        
     )
-  )
+  ))
 
-  (def root-state (struct cup-state 0 0) )
-  (def final (loop [stack (list [ root-state ] ) visited #{ root-state } ]
+(let [root-state (struct cup-state 0 0 )]
+  (let [ final (loop [stack (list [ root-state ] ) visited #{ root-state } ]
     (if (empty? stack) 
       false
       (do 
@@ -74,14 +72,14 @@
         )
       )
     )
-  ))
-
-  (if-not final
-    (println "No possible sequence found!")
-    (do
-      (println "This will take" (count final) "steps!")
-      (doseq [ entry final ]
-        (println (str "(" (entry :x) ", " (entry :y) ")"))
+  )]
+    (if-not final
+      (println "No possible sequence found!")
+      (do
+        (println "This will take" (count final) "steps!")
+        (doseq [ entry final ]
+          (println (str "(" (entry :x) ", " (entry :y) ")"))
+        )
       )
     )
   )
