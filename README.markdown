@@ -77,6 +77,7 @@ ghc --make -O cups.hs
 ```bash
 # Assuming you have lein and lein exec installed
 lein exec cups.clj
+lein exec cups.clj 13 14 2
 ```
 
 ## Simulation

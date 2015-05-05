@@ -1,4 +1,17 @@
-(let [max-x 9 max-y 4 target-volume 2]
+(if (>= (count *command-line-args*) 4)
+  (do 
+    (def max-x (Integer. (nth *command-line-args* 1)))
+    (def max-y (Integer. (nth *command-line-args* 2)))
+    (def target-volume (Integer. (nth *command-line-args* 3)))
+  )
+  (do
+    (def max-x 9)
+    (def max-y 4)
+    (def target-volume 2)
+  )
+)
+
+(let [max-x max-x max-y max-y target-volume target-volume]
   (defstruct cup-state :x :y)
 
   (defn is-target-volume? [state]
@@ -62,11 +75,14 @@
       )
     )
   ))
-  
+
   (if-not final
     (println "No possible sequence found!")
-    (doseq [ entry final ]
-      (println (str "(" (entry :x) ", " (entry :y) ")"))
+    (do
+      (println "This will take" (count final) "steps!")
+      (doseq [ entry final ]
+        (println (str "(" (entry :x) ", " (entry :y) ")"))
+      )
     )
   )
 )
