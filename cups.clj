@@ -13,12 +13,11 @@
                   (let [next-states (filter #(not (contains? visited %))
                                             (-> arr first last get-next-states))]
                     [(concat (next arr)
-                            (map #(conj (first arr) %) next-states))
+                             (map #(conj (first arr) %) next-states))
                      (clojure.set/union visited (set next-states))]))
            [[[root-state]] #{}] )
-    (map first)
-    (filter #(or (empty? %) (is-target-volume? (-> % last last))))
-    first last))
+    (filter #(or (-> % first emtpy?) (-> % first last last is-target-volume?)))
+    first first last))
 
 (defn make-is-target-volume? [target-volume]
   (fn [state] (or (= target-volume (:x state)) (= target-volume (:y state)))))
