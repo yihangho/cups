@@ -44,10 +44,11 @@ initial_state = CupState(0 , 0 , False)
 bfs_queue.append(initial_state)
 visited_states = [[0 for x in range(MAX_VOL_X + 1)] for y in range(MAX_VOL_Y + 1)]
 
-while bfs_queue.__len__() :
+while len(bfs_queue) > 0:
 	current_state = bfs_queue.pop(0)
-	if visited_states[current_state.volume_y][current_state.volume_x]: continue
-		
+	if visited_states[current_state.volume_y][current_state.volume_x]:
+		continue
+
 	if current_state.isTargetVolume():
 		num_x = []
 		num_y = []
@@ -55,10 +56,12 @@ while bfs_queue.__len__() :
 			num_x.append(current_state.volume_x)
 			num_y.append(current_state.volume_y)
 			current_state = current_state.parent
-			if current_state == False: break
-		
-		print("Found a solution with %s steps!" % (num_x.__len__() - 1))	
-		while num_x.__len__(): print("(%s , %s)" % (num_x.pop() , num_y.pop()))
+			if current_state == False:
+				break
+
+		print("Found a solution with %s steps!" % (len(num_x) - 1))
+		while len(num_x):
+			print("(%s , %s)" % (num_x.pop() , num_y.pop()))
 		exit()
 
 	visited_states[current_state.volume_y][current_state.volume_x] = True
